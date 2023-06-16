@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "q_q"
+version = "0.1.0"
+description = ""
+authors = ["toshi-pono"]
+readme = "README.md"
+packages = [{include = "q_q"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.97.0"
+uvicorn = "^0.22.0"
+sqlalchemy = "^2.0.16"
+python-dotenv = "^1.0.0"
+pydantic = "^1.10.9"
+sqlalchemy-utils = "^0.41.1"
+mysqlclient = "^2.1.1"
+
+
+[tool.black]
+target-version = ["py310"]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
