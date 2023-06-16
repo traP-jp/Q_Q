@@ -1,6 +1,7 @@
 from sqlalchemy import (
     Column,
     ForeignKey,
+    Integer,
     String,
     Text,
     Boolean,
@@ -31,17 +32,52 @@ class QuestionTags(Base):
 
 class Question(Base):
     __tablename__ = "questions"
-    id = Column(UUIDType(binary=False), primary_key=True, index=True)
-    text = Column(Text, nullable=False)
-    answer = Column(Text, nullable=False)
+    id = Column(UUIDType(binary=False), primary_key=True)
+    user_id = Column(UUIDType(binary=False), nullable=False)
+    content = Column(Text, nullable=False)
+    favs = Column(Integer, default=0, nullable=False)
+    vector = Column(Text, nullable=False)
     done = Column(Boolean, default=False, nullable=False)
     fetched_at = Column(
         DateTime,
         default=datetime.now(),
         nullable=False,
     )
+    created_at = Column(
+        DateTime,
+        nullable=False,
+    )
+    updated_at = Column(
+        DateTime,
+        nullable=False,
+    )
     tags = relationship(
         "Tag", secondary=QuestionTags.__tablename__, back_populates="questions"
+    )
+    answers = relationship("Answer", back_populates="questions")
+
+
+class Answer(Base):
+    __tablename__ = "answers"
+    id = Column(UUIDType(binary=False), primary_key=True)
+    user_id = Column(UUIDType(binary=False), nullable=False)
+    question_id = Column(
+        UUIDType(binary=False), ForeignKey("questions.id"), nullable=False
+    )
+    content = Column(Text, nullable=False)
+    favs = Column(Integer, default=0, nullable=False)
+    fetched_at = Column(
+        DateTime,
+        default=datetime.now(),
+        nullable=False,
+    )
+    created_at = Column(
+        DateTime,
+        nullable=False,
+    )
+    updated_at = Column(
+        DateTime,
+        nullable=False,
     )
 
 
@@ -51,4 +87,18 @@ class Tag(Base):
     tag = Column(String(50), nullable=False)
     questions = relationship(
         "Question", secondary=QuestionTags.__tablename__, back_populates="tags"
+    )
+
+
+class Stamp(Base):
+    __tablename__ = "stamps"
+    id = Column(UUIDType(binary=False), primary_key=True)
+    message_id = Column(
+        UUIDType(binary=False), nullable=False, primary_key=True
+    )
+    count = Column(Integer, default=0, nullable=False)
+    fetched_at = Column(
+        DateTime,
+        default=datetime.now(),
+        nullable=False,
     )
