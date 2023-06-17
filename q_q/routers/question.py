@@ -1,6 +1,6 @@
 from typing import List
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from q_q.routers import deps
 from q_q import crud, schemas
@@ -15,11 +15,11 @@ async def read_questions(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    q: str = None
+    q: str = None,
 ):
     questions = []
     if q is not None:
-        questions=crud.question.search_questions(db, q)
+        questions = crud.question.search_questions(db, q)
     else:
         questions = crud.question.get_multi(db, skip=skip, limit=limit)
     return [convert.question_response(question) for question in questions]
@@ -31,8 +31,13 @@ async def read_question(
     question_id: str,
     db: Session = Depends(deps.get_db),
 ):
-    question = crud.question.get_question(db , question_id) 
+    question = crud.question.get_question(db, question_id)
+    if question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
     return schemas.QuestionDetail(
         question=convert.question_response(question),
-        answers=[convert.question_answer_response(answer)for answer in question.answers]
+        answers=[
+            convert.question_answer_response(answer)
+            for answer in question.answers
+        ],
     )
