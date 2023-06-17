@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     db_user: str
     db_password: str
     db_database: str
+    api_token: str
 
     class Config:
         env_file = ".env"
@@ -17,6 +18,7 @@ class Settings(BaseSettings):
             "db_user": {"env": "NS_MARIADB_USER"},
             "db_password": {"env": "NS_MARIADB_PASSWORD"},
             "db_database": {"env": "NS_MARIADB_DATABASE"},
+            "api_token": {"env": "TRAQ_API_TOKEN"},
         }
 
 

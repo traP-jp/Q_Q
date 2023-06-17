@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends
 
 from q_q.routers import deps
 from q_q import crud, schemas
+import q_q.schemas.convert as convert
 
 router = APIRouter()
 
@@ -16,7 +17,7 @@ async def read_questions(
     limit: int = 100,
 ):
     questions = crud.question.get_multi(db, skip=skip, limit=limit)
-    return questions
+    return [convert.question_response(question) for question in questions]
 
 
 # GET /questions/{question_id}
