@@ -54,7 +54,10 @@ class Question(Base):
     tags = relationship(
         "Tag", secondary=QuestionTags.__tablename__, back_populates="questions"
     )
-    stamps = relationship("Stamp", back_populates="questions")
+    stamps = relationship(
+        "QuestionStamp",
+        back_populates="questions",
+    )
     answers = relationship("Answer", back_populates="questions")
 
 
@@ -80,7 +83,11 @@ class Answer(Base):
         DateTime,
         nullable=False,
     )
-    stamps = relationship("Stamp", back_populates="answers")
+    questions = relationship("Question", back_populates="answers")
+    stamps = relationship(
+        "AnswerStamp",
+        back_populates="answers",
+    )
 
 
 class Tag(Base):
@@ -92,11 +99,11 @@ class Tag(Base):
     )
 
 
-class Stamp(Base):
-    __tablename__ = "stamps"
+class QuestionStamp(Base):
+    __tablename__ = "question_stamps"
     id = Column(UUIDType(binary=False), primary_key=True)
-    message_id = Column(
-        UUIDType(binary=False), nullable=False, primary_key=True
+    question_id = Column(
+        UUIDType(binary=False), ForeignKey("questions.id"), nullable=False
     )
     count = Column(Integer, default=0, nullable=False)
     fetched_at = Column(
@@ -104,3 +111,21 @@ class Stamp(Base):
         default=datetime.now(),
         nullable=False,
     )
+    questions = relationship(
+        "Question", back_populates="stamps", uselist=False
+    )
+
+
+class AnswerStamp(Base):
+    __tablename__ = "answer_stamps"
+    id = Column(UUIDType(binary=False), primary_key=True)
+    answer_id = Column(
+        UUIDType(binary=False), ForeignKey("answers.id"), nullable=False
+    )
+    count = Column(Integer, default=0, nullable=False)
+    fetched_at = Column(
+        DateTime,
+        default=datetime.now(),
+        nullable=False,
+    )
+    answers = relationship("Answer", back_populates="stamps", uselist=False)
