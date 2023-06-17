@@ -1,4 +1,4 @@
-from q_q.core.config import Settings
+from q_q.core.config import settings
 from q_q.database import mockdata
 from sqlalchemy.orm import sessionmaker
 from .session import engine
@@ -6,7 +6,7 @@ from .base import SQLBase
 
 
 def init_db() -> None:
-    if Settings.gen_mock_data:
+    if settings.gen_mock_data:
         print("init_db")
         SessionClass = sessionmaker(engine)  # セッションを作るクラスを作成
         session = SessionClass()
