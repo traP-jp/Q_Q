@@ -33,7 +33,6 @@ async def read_users(
 ):
     try:
         data = user.get_users()
-        print(data)
         return [
             schemas.User(
                 id=user["id"],
