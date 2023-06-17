@@ -11,7 +11,7 @@ def load_channles(access_token, verbose=False):
     if verbose:
         print('load all channels')
     headers = {
-        "Authorization": f"Bearer crWzVZn1oYneExkQuAoVoCG1INpZCGuCuyrw",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
 
