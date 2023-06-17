@@ -27,16 +27,16 @@ class CRUDQuestionStamp:
     def create(
         self, db: Session, *, obj_in: schemas.StampCreate, no_commit=False
     ) -> None:
-        prev = self.get_stamp(db, obj_in.message_id, obj_in.id)
+        prev = self.get_stamp(db, obj_in.messageId, obj_in.id)
         if prev:
             return
 
         db.add(
             QuestionStamp(
                 id=obj_in.id,
-                question_id=obj_in.message_id,
+                question_id=obj_in.messageId,
                 count=obj_in.count,
-                fetched_at=obj_in.fetched_at,
+                fetched_at=obj_in.fetchedAt,
             )
         )
         if not no_commit:
@@ -66,16 +66,16 @@ class CRUDAnswerStamp:
     def create(
         self, db: Session, *, obj_in: schemas.StampCreate, no_commit=False
     ) -> None:
-        prev = self.get_stamp(db, obj_in.message_id, obj_in.id)
+        prev = self.get_stamp(db, obj_in.messageId, obj_in.id)
         if prev:
             return
 
         db.add(
             AnswerStamp(
                 id=obj_in.id,
-                answer_id=obj_in.message_id,
+                answer_id=obj_in.messageId,
                 count=obj_in.count,
-                fetched_at=obj_in.fetched_at,
+                fetched_at=obj_in.fetchedAt,
             )
         )
         if not no_commit:

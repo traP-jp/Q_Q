@@ -11,6 +11,6 @@ class TraQStamp(BaseModel):
 
 class StampCreate(BaseModel):
     id: UUID4
-    message_id: UUID4
+    messageId: UUID4
     count: int
-    fetched_at: datetime.datetime
+    fetchedAt: datetime.datetime

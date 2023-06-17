@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy.orm import Session
 from q_q import schemas
 from q_q.models import QuestionTags, Tag
@@ -10,10 +11,13 @@ class CRUDTag:
     def get_tag(self, db: Session, tag_id: str) -> Tag | None:
         return db.query(self.model).filter(Tag.id == tag_id).first()
 
+    def get_tag_by_name(self, db: Session, tag_name: str) -> Tag | None:
+        return db.query(self.model).filter(Tag.tag == tag_name).first()
+
     def create(
         self, db: Session, *, obj_in: schemas.TagCreate, no_commit=False
     ) -> None:
-        prev = db.query(self.model).filter(Tag.id == obj_in.id).first()
+        prev = self.get_tag_by_name(db, obj_in.tag)
         if prev:
             return
 

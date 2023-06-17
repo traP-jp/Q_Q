@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -49,7 +50,32 @@ async def create_question(
     question: schemas.QuestionCreate,
     db: Session = Depends(deps.get_db),
 ):
-    question = crud.question.create(db, obj_in=question)
-    if question is None:
+    crud.question.create(db, obj_in=question)
+    # save tags
+    for tag in question.tags:
+        tag_id = str(uuid.uuid4())
+        crud.tag.create(db, obj_in=schemas.TagCreate(tag=tag, id=tag_id))
+        crud.tag_question.create(
+            db,
+            obj_in=schemas.TagQuestionCreate(
+                tag_id=tag_id, question_id=question.messageId
+            ),
+        )
+
+    for stamp in question.stamps:
+        crud.question_stamp.create(
+            db,
+            obj_in=schemas.StampCreate(
+                id=str(uuid.uuid4()),
+                messageId=stamp.messageId,
+                count=stamp.count,
+                fetchedAt=question.fetchedAt,
+            ),
+            no_commit=True,
+        )
+    db.commit()
+
+    result = crud.question.get_question(db, question.messageId)
+    if result is None:
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    return question
+    return result
