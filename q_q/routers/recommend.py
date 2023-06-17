@@ -1,29 +1,30 @@
 from typing import List
-from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-
+from sqlalchemy.orm import Session
 from q_q.routers import deps
-from q_q import crud, schemas
+from q_q import schemas
+
 
 router = APIRouter()
 
 
-# GET /questions?skip=...&limit=...
+# GET /recommend?q=...
 @router.get("/", response_model=List[schemas.Question])
 async def read_questions(
     db: Session = Depends(deps.get_db),
+    q: str = "",
     skip: int = 0,
     limit: int = 100,
 ):
-    questions = crud.question.get_multi(db, skip=skip, limit=limit)
-    return questions
+    # TODO: implement
+    return []
 
 
-# GET /questions/{question_id}
-@router.get("/{question_id}", response_model=schemas.QuestionDetail)
+# GET /recommend/{question_id}
+@router.get("/{question_id}", response_model=List[schemas.Question])
 async def read_question(
     question_id: str,
     db: Session = Depends(deps.get_db),
 ):
     # TODO: implement
-    return {}
+    return []

@@ -54,6 +54,7 @@ class Question(Base):
     tags = relationship(
         "Tag", secondary=QuestionTags.__tablename__, back_populates="questions"
     )
+    stamps = relationship("Stamp", back_populates="questions")
     answers = relationship("Answer", back_populates="questions")
 
 
@@ -79,6 +80,7 @@ class Answer(Base):
         DateTime,
         nullable=False,
     )
+    stamps = relationship("Stamp", back_populates="answers")
 
 
 class Tag(Base):
