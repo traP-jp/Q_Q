@@ -35,3 +35,26 @@ class Answer(BaseModel):
 class QuestionDetail(BaseModel):
     question: Question
     answers: List[Answer]
+
+
+class QuestionCreate(BaseModel):
+    messageId: UUID4
+    userId: UUID4
+    content: str
+    done: bool
+    tags: List[str]
+    stamps: List[Stamp]
+    fetchedAt: datetime.datetime
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+
+
+class AnswerCreate(BaseModel):
+    messageId: UUID4
+    questionId: UUID4
+    userId: UUID4
+    content: str
+    stamps: List[Stamp]
+    fetchedAt: datetime.datetime
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime

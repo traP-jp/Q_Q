@@ -41,3 +41,15 @@ async def read_question(
             for answer in question.answers
         ],
     )
+
+
+# POST /questions
+@router.post("/", status_code=201, response_model=schemas.Question)
+async def create_question(
+    question: schemas.QuestionCreate,
+    db: Session = Depends(deps.get_db),
+):
+    question = crud.question.create(db, obj_in=question)
+    if question is None:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    return question
