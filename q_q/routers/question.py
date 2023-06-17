@@ -15,8 +15,13 @@ async def read_questions(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
+    q: str = None
 ):
-    questions = crud.question.get_multi(db, skip=skip, limit=limit)
+    questions = []
+    if q is not None:
+        questions=crud.question.search_questions(db, q)
+    else:
+        questions = crud.question.get_multi(db, skip=skip, limit=limit)
     return [convert.question_response(question) for question in questions]
 
 
@@ -26,5 +31,8 @@ async def read_question(
     question_id: str,
     db: Session = Depends(deps.get_db),
 ):
-    # TODO: implement
-    return {}
+    question = crud.question.get_question(db , question_id) 
+    return schemas.QuestionDetail(
+        question=convert.question_response(question),
+        answers=[convert.question_answer_response(answer)for answer in question.answers]
+    )
