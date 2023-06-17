@@ -43,7 +43,7 @@ async def read_question(
     )
 
 
-# POST /questions
+# POST /questions Create a new question
 @router.post("/", status_code=201, response_model=schemas.Question)
 async def create_question(
     question: schemas.QuestionCreate,
