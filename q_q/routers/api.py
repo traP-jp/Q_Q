@@ -4,6 +4,7 @@ from .question import router as question_router
 from .search import router as search_router
 from .recommend import router as recommend_router
 from .user import router as user_router
+from .stamp import router as stamp_router
 
 api_router = APIRouter()
 api_router.include_router(ping_router, prefix="/ping", tags=["ping"])
@@ -15,3 +16,4 @@ api_router.include_router(
     recommend_router, prefix="/recommend", tags=["recommend"]
 )
 api_router.include_router(user_router, prefix="/users", tags=["user"])
+api_router.include_router(stamp_router, prefix="/stamps", tags=["stamp"])
