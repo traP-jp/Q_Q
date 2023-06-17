@@ -9,7 +9,7 @@ def question_response(question: models.Question) -> schemas.Question:
         responseNum=len(question.answers),
         favs=question.favs,
         done=question.done,
-        tags=question.tags,
+        tags=[tag.tag for tag in question.tags],
         stamps=[
             schemas.Stamp(
                 id=stamp.id, messageId=stamp.question_id, count=stamp.count
@@ -20,8 +20,8 @@ def question_response(question: models.Question) -> schemas.Question:
         updatedAt=question.updated_at,
     )
 
-def question_answer_response(
-        answer: models.Answer)-> schemas.Answer:
+
+def question_answer_response(answer: models.Answer) -> schemas.Answer:
     return schemas.Answer(
         id=answer.id,
         userId=answer.user_id,
@@ -29,7 +29,7 @@ def question_answer_response(
         favs=answer.favs,
         stamps=[
             schemas.Stamp(
-                id=stamp.id,messageId=stamp.answer_id,count=stamp.count
+                id=stamp.id, messageId=stamp.answer_id, count=stamp.count
             )
             for stamp in answer.stamps
         ],

@@ -50,32 +50,37 @@ async def create_question(
     question: schemas.QuestionCreate,
     db: Session = Depends(deps.get_db),
 ):
-    crud.question.create(db, obj_in=question)
-    # save tags
-    for tag in question.tags:
-        tag_id = str(uuid.uuid4())
-        crud.tag.create(db, obj_in=schemas.TagCreate(tag=tag, id=tag_id))
-        crud.tag_question.create(
-            db,
-            obj_in=schemas.TagQuestionCreate(
-                tag_id=tag_id, question_id=question.messageId
-            ),
-        )
+    try:
+        crud.question.create(db, obj_in=question)
+        # save tags
+        for tag in question.tags:
+            tag_id = str(uuid.uuid4())
+            crud.tag.create(db, obj_in=schemas.TagCreate(tag=tag, id=tag_id))
+            crud.tag_question.create(
+                db,
+                obj_in=schemas.TagQuestionCreate(
+                    tag_id=tag_id, question_id=question.messageId
+                ),
+            )
 
-    for stamp in question.stamps:
-        crud.question_stamp.create(
-            db,
-            obj_in=schemas.StampCreate(
-                id=str(uuid.uuid4()),
-                messageId=stamp.messageId,
-                count=stamp.count,
-                fetchedAt=question.fetchedAt,
-            ),
-            no_commit=True,
-        )
-    db.commit()
+        for stamp in question.stamps:
+            crud.question_stamp.create(
+                db,
+                obj_in=schemas.StampCreate(
+                    id=str(uuid.uuid4()),
+                    messageId=stamp.messageId,
+                    count=stamp.count,
+                    fetchedAt=question.fetchedAt,
+                ),
+                no_commit=True,
+            )
+        db.commit()
+    except Exception as e:
+        print(e)
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
-    result = crud.question.get_question(db, question.messageId)
+    result = crud.question.get_question(db, question_id=question.messageId)
     if result is None:
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    return result
+    return convert.question_response(result)
