@@ -4,7 +4,7 @@ from q_q import schemas
 from q_q.models import Question
 
 
-class CURDQuestion:
+class CRUDQuestion:
     def __init__(self, model):
         self.model = model
 
@@ -25,8 +25,8 @@ class CURDQuestion:
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def create(
-        self, db: Session, *, obj_in: schemas.QuestionCreate
-    ) -> Question | None:
+        self, db: Session, *, obj_in: schemas.QuestionCreate, no_commit=False
+    ) -> None:
         db.add(
             Question(
                 id=obj_in.messageId,
@@ -35,16 +35,14 @@ class CURDQuestion:
                 favs=0,
                 vector="",
                 done=obj_in.done,
-                tags=obj_in.tags,
-                stamps=obj_in.stamps,
                 fetched_at=obj_in.fetchedAt,
                 created_at=obj_in.createdAt,
                 updated_at=obj_in.updatedAt,
             )
         )
-        db.commit()
+        if not no_commit:
+            db.commit()
+        return
 
-        return self.get_question(db, obj_in.messageId)
 
-
-question = CURDQuestion(Question)
+question = CRUDQuestion(Question)

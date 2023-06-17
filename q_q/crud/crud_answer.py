@@ -3,7 +3,7 @@ from q_q import schemas
 from q_q.models import Answer
 
 
-class CURDAnswer:
+class CRUDAnswer:
     def __init__(self, model):
         self.model = model
 
@@ -11,24 +11,23 @@ class CURDAnswer:
         return db.query(self.model).filter(Answer.id == answer_id).first()
 
     def create(
-        self, db: Session, *, obj_in: schemas.AnswerCreate
-    ) -> Answer | None:
+        self, db: Session, *, obj_in: schemas.AnswerCreate, no_commit=False
+    ) -> None:
         db.add(
             Answer(
                 id=obj_in.messageId,
                 question_id=obj_in.questionId,
                 user_id=obj_in.userId,
                 content=obj_in.content,
-                stamps=obj_in.stamps,
                 favs=0,
                 fetched_at=obj_in.fetchedAt,
                 created_at=obj_in.createdAt,
                 updated_at=obj_in.updatedAt,
             )
         )
-        db.commit()
+        if not no_commit:
+            db.commit()
+        return None
 
-        return self.get_answer(db, obj_in.messageId)
 
-
-answer = CURDAnswer(Answer)
+answer = CRUDAnswer(Answer)
