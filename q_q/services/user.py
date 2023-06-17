@@ -16,7 +16,7 @@ def get_users():
     }
 
     res = requests.get(
-        "https://q.trap.jp/api/v3/users",
+        "https://q.trap.jp/api/v3/users?include-suspended=true",
         headers=headers,
     )
     if res.status_code == 200:
