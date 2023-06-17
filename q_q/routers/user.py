@@ -1,3 +1,5 @@
+import pprint
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from q_q.routers import deps
@@ -22,4 +24,24 @@ async def read_user(
             displayName=data.display_name,
         )
     except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.get("/", response_model=List[schemas.User])
+async def read_users(
+    db: Session = Depends(deps.get_db),
+):
+    try:
+        data = user.get_users()
+        print(data)
+        return [
+            schemas.User(
+                id=user["id"],
+                name=user["name"],
+                displayName=user["displayName"],
+            )
+            for user in data
+        ]
+    except Exception as e:
+        pprint(e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
