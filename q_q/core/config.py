@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     db_database: str
     api_token: str
     gen_mock_data: bool = False
+    gen_table: bool = False
     root_password: str = "root"
 
     class Config:
@@ -22,6 +23,7 @@ class Settings(BaseSettings):
             "db_database": {"env": "NS_MARIADB_DATABASE"},
             "api_token": {"env": "TRAQ_API_TOKEN"},
             "gen_mock_data": {"env": "GEN_MOCK_DATA"},
+            "gen_table": {"env": "GEN_TABLE"},
             "root_password": {"env": "ROOT_PASSWORD"},
         }
 

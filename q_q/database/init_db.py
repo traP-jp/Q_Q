@@ -13,6 +13,8 @@ def init_db() -> None:
         SQLBase.metadata.drop_all(bind=engine)
         SQLBase.metadata.create_all(bind=engine)
         mockdata.insert_mockdata(session)
-
+    elif settings.gen_table:
+        print("init_db (gen_table)")
+        SQLBase.metadata.create_all(bind=engine)
     else:
         print("skip init_db")
