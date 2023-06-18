@@ -20,8 +20,8 @@ async def read_stamps(
             schemas.TraQStamp(
                 id=stamp["id"],
                 name=stamp["name"],
-                fileId=stamp["fileId"],
-                isUnicode=stamp["isUnicode"],
+                fileId=stamp["file_id"],
+                isUnicode=stamp["is_unicode"],
             )
             for stamp in data
         ]

@@ -8,7 +8,8 @@ def get_stamps():
     """
     Get all stamps from the Traq API.
     """
-    return stamp_api.get_stamps()
+    thread = stamp_api.get_stamps()
+    return thread
 
 
 def get_stamp(stamp_id: str):

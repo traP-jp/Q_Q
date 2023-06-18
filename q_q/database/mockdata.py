@@ -7,7 +7,7 @@ def insert_mockdata(db: Session):
         Question(
             id="3be4b850-dcd3-42a7-9751-a9f43d0e1732",
             user_id="5f324dc6-8f9f-4f4c-a513-61db8312e067",
-            content="test",
+            content="test:wakaru:",
             favs=0,
             vector="",
             done=False,
