@@ -561,16 +561,6 @@ files = [
 ]
 
 [[package]]
-name = "sklearn"
-version = "0.0.post5"
-description = "deprecated sklearn package, use scikit-learn instead"
-optional = false
-python-versions = "*"
-files = [
-    {file = "sklearn-0.0.post5.tar.gz", hash = "sha256:7377c714a03a79bbe9196f435db931fd2a6fa8c68514da7ed3a251fd08c52e2c"},
-]
-
-[[package]]
 name = "sniffio"
 version = "1.3.0"
 description = "Sniff out which async library your code is running under"
@@ -799,4 +789,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "b5a630b94a730934299a2fdc56fe43e1ba7148c56fa5eb0d8cdd1c55852befa7"
+content-hash = "f7f25e0f21ef13264a6c1ab27b7aeec21bd4ef4509cccaf2d399f94895304882"
